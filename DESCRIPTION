@@ -1,0 +1,36 @@
+Package: terminalgraphics
+Type: Package
+Title: Graphical Output in Terminals
+Version: 0.1.1
+Authors@R: 
+    person(given = "Jan",
+           family = "van der Laan",
+           role = c("aut", "cre"),
+           email = "r@eoos.dds.nl",
+           comment = c(ORCID = "0000-0002-0693-1514"))
+Description: Defines a graphics device and functions for graphical output in
+    terminal emulators that support graphical output. Currently terminals that
+    support the Terminal Graphics Protocol
+    (<https://sw.kovidgoyal.net/kitty/graphics-protocol/>) and terminal supporting Sixel 
+    (<https://en.wikipedia.org/wiki/Sixel>) are supported.
+BugReports: https://codeberg.org/djvanderlaan/terminalgraphics/issues
+URL: https://codeberg.org/djvanderlaan/terminalgraphics
+Depends: R (>= 4.1.0)
+Imports: Rcpp, utils, graphics, grDevices, ragg, base64enc
+Suggests: magick
+LinkingTo: Rcpp
+License: GPL-3
+SystemRequirements: A terminal emulator supporting the Terminal
+        Graphics Protocol
+        (<https://sw.kovidgoyal.net/kitty/graphics-protocol/>) or
+        Sixel.
+LazyLoad: yes
+Encoding: UTF-8
+RoxygenNote: 7.3.2
+NeedsCompilation: yes
+Packaged: 2025-08-22 20:54:32 UTC; eoos
+Author: Jan van der Laan [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-0693-1514>)
+Maintainer: Jan van der Laan <r@eoos.dds.nl>
+Repository: CRAN
+Date/Publication: 2025-08-28 07:40:02 UTC
