@@ -22,13 +22,24 @@ Get the colors used in the terminal
 \details{
 Getting the color palette used in the terminal is terminal specific.
 Currently only the kitty terminal is supported. For other terminals default
-colors are returned.
+colors are returned. Unless set using \code{\link{options}} (see below).
+
+When the option \code{term_background} is set, that is returned by 
+\code{term_background()}. The same with the options \code{term_foreground}
+and \code{term_palette} by \code{term_foreground()} and \code{term_palette()}
+respectively.
 }
 \examples{
 term_background()
 
+options(term_background = "black", term_foreground = "white", 
+  term_palette = grDevices::hcl.colors("Pastel1", n = 9),
+  term_col = TRUE)
+# term_col enables automatic use of the colors by tgp() and sixel()
+
 }
 \seealso{
 \code{\link{kitty_colors}} for the functions returning the specific colors
-used in the kitty terminal.
+used in the kitty terminal. Also see \code{\link{term_color_mode}} which is
+used to determine the color mode.
 }

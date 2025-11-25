@@ -19,16 +19,17 @@ sixel(
 \item{width}{The width of the image. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
-\item{height}{The height of the image. Passed on to 
+\item{height}{The height of the image. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
 \item{units}{The units in which 'height' and 'width' are given. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
-\item{res}{The resulution of the image. Passed on to 
+\item{res}{The resolution of the image. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
-\item{...}{passed on to the underlying \code{\link[ragg]{agg_capture}} device.}
+\item{...}{passed on to the underlying \code{\link[ragg]{agg_capture}}
+device.}
 
 \item{term_col}{Logical value indicating that the foreground and background
 colors used in the plot should be set to that of the terminal.}
@@ -69,8 +70,8 @@ once. Please file an issue when the terminal does support Sixel while
 disabled using \code{options(warned_sixel_support = TRUE)}.
 }
 \examples{
-
 if (has_sixel_support()) {
+  # Open device
   sixel()
   plot(rnorm(100))
   abline(h = 0, lwd = 2, col = term_palette()[1])

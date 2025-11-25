@@ -16,25 +16,42 @@
 #'
 #' @export
 has_tgp_support <- function(warn = FALSE, throw = FALSE) {
-  # Check if the terminal reports its dimensions in pixels; if not we don't 
+  # Check if the terminal reports its dimensions in pixels; if not we don't
   # want to support it.
   dim <- term_dim()
-  if (length(dim) < 4 || is.na(dim[3]) || dim[3] == 0 || 
-      is.na(dim[4]) || dim[4] == 0) {
-    if (warn) 
-      warning("Terminal does not report its size in pixels.")
+  if ( length(dim) < 4 || is.na(dim[3]) || dim[3] == 0 || 
+       is.na(dim[4]) || dim[4] == 0) {
+    if (warn) warning("Terminal does not report its size in pixels.")
     return(FALSE)
   }
   # Send query for support
-  sup <- query_tgp_support_rcpp()
-  if (is.na(sup) || !sup) {
-    if (warn) 
+  supported <- !is.na(query_tgp_support())
+  if (!supported) {
+    if (warn) {
       warning("Terminal does not report supporting terminal graphics protocol")
+      if (tmux() && !tmux_passthrough()) 
+        warning("Allow-passthrough is not enabled in tmux.")
+    }
     return(FALSE)
   }
   TRUE
 }
 
+query_tgp_support <- local({
+  support <- NULL
+  function() {
+    if (is.null(support)) {
+      if (tmux() && !tmux_passthrough()) {
+        #warning("Passthrough is not enabled in tmux;", 
+          #" terminal graphics protocol is not supported.")
+        support <<- NA
+      } else {
+        support <<- query_tgp_support_rcpp()
+      }
+    }
+    support
+  }
+})
 
 warn_tgp_support <- function() {
   warned <- getOption("warned_tgp_support", FALSE)
@@ -44,5 +61,18 @@ warn_tgp_support <- function() {
       warning("This warning is only shown once.")
     }
   }
+}
+
+
+tmux <- function() {
+  term <- Sys.getenv("TERM_PROGRAM")
+  term == "tmux"
+}
+
+tmux_passthrough <- function() {
+  term <- Sys.getenv("TERM_PROGRAM")
+  if (term != "tmux") return(FALSE)
+  sup <- system("tmux show-options -g allow-passthrough", intern = TRUE)
+  sup == "allow-passthrough on"
 }
 

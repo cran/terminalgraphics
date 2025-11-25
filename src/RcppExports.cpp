@@ -10,6 +10,17 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// term_color_mode_rcpp
+Rcpp::CharacterVector term_color_mode_rcpp(bool dsr);
+RcppExport SEXP _terminalgraphics_term_color_mode_rcpp(SEXP dsrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< bool >::type dsr(dsrSEXP);
+    rcpp_result_gen = Rcpp::wrap(term_color_mode_rcpp(dsr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // query_sixel_support_rcpp
 Rcpp::LogicalVector query_sixel_support_rcpp();
 RcppExport SEXP _terminalgraphics_query_sixel_support_rcpp() {
@@ -21,7 +32,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // query_tgp_support_rcpp
-Rcpp::LogicalVector query_tgp_support_rcpp();
+Rcpp::CharacterVector query_tgp_support_rcpp();
 RcppExport SEXP _terminalgraphics_query_tgp_support_rcpp() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -42,6 +53,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_terminalgraphics_term_color_mode_rcpp", (DL_FUNC) &_terminalgraphics_term_color_mode_rcpp, 1},
     {"_terminalgraphics_query_sixel_support_rcpp", (DL_FUNC) &_terminalgraphics_query_sixel_support_rcpp, 0},
     {"_terminalgraphics_query_tgp_support_rcpp", (DL_FUNC) &_terminalgraphics_query_tgp_support_rcpp, 0},
     {"_terminalgraphics_screen_dim_cpp", (DL_FUNC) &_terminalgraphics_screen_dim_cpp, 0},

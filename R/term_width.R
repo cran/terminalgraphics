@@ -12,6 +12,5 @@
 #'
 #' @export
 term_width <- function() {
-  term_dim()[1] |> as.vector()
+  term_dim()[[1]]
 }
-

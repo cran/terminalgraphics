@@ -10,6 +10,5 @@
 #'
 #' @export
 term_height <- function() {
-  term_dim()[2] |> as.vector()
+  term_dim()[[2]]
 }
-

@@ -1,4 +1,3 @@
-
 #' Get the colors used in the kitty terminal
 #'
 #' @details
@@ -7,7 +6,7 @@
 #' using \code{\link{system}}. However, for the last to work
 #' \code{allow_remote_control} needs to be set to \code{true} in the config
 #' file for kitty.
-#' 
+#'
 #' @return
 #' \code{kitty_colors} returns a data.frame with the colors from the theme used
 #' by kitty. \code{kitty_background} returns the background color (character
@@ -31,11 +30,15 @@
 kitty_colors <- function() {
   colors <- getOption("kitty_colors")
   if (is.null(colors)) {
-    if (!is_kitty()) 
+    if (!is_kitty()) {
       stop("Your terminal does not seem to be 'kitty'.")
+    }
     colors <- system("kitty @get-colors", intern = TRUE)
-    colors <- utils::read.table(textConnection(colors), 
-      comment = "", header = FALSE)
+    colors <- utils::read.table(
+      textConnection(colors),
+      comment = "",
+      header = FALSE
+    )
     names(colors) <- c("name", "value")
     options(kitty_colors = colors)
   }
@@ -48,8 +51,9 @@ kitty_colors <- function() {
 kitty_background <- function() {
   background <- getOption("kitty_background")
   if (is.null(background)) {
-    if (!is_kitty()) 
+    if (!is_kitty()) {
       stop("Your terminal does not seem to be 'kitty'.")
+    }
     background <- system("kitten query-terminal background", intern = TRUE)
     background <- gsub("background: ", "", background)
     options(kitty_background = background)
@@ -62,8 +66,9 @@ kitty_background <- function() {
 kitty_foreground <- function() {
   foreground <- getOption("kitty_foreground")
   if (is.null(foreground)) {
-    if (!is_kitty()) 
+    if (!is_kitty()) {
       stop("Your terminal does not seem to be 'kitty'.")
+    }
     foreground <- system("kitten query-terminal foreground", intern = TRUE)
     foreground <- gsub("foreground: ", "", foreground)
     options(kitty_foreground = foreground)

@@ -4,7 +4,7 @@
 #' An integer vector with the width and height of the terminal in pixels
 #' (\code{x_pixels} and \code{y_pixels}) and the number of text columns and rows
 #' in the terminal window (\code{columns} and \code{rows}).
-#' 
+#'
 #' These values can be zero when the terminal does not support querying the
 #' size. Some terminals only support querying the number of columns and rows.
 #' Under windows the return value will always be zero as querying the size
@@ -17,7 +17,6 @@
 #' @export
 term_dim <- function() {
   dim <- screen_dim_cpp()
-  names(dim) <- c("x_pixels", "y_pixels", "columns", "rows")
+  names(dim) <- c("x_pixels", "y_pixels", "rows", "columns")
   dim
 }
-

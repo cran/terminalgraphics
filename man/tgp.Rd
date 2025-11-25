@@ -19,16 +19,17 @@ tgp(
 \item{width}{The width of the image. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
-\item{height}{The height of the image. Passed on to 
+\item{height}{The height of the image. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
 \item{units}{The units in which 'height' and 'width' are given. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
-\item{res}{The resolution of the image. Passed on to 
+\item{res}{The resolution of the image. Passed on to
 \code{\link[ragg]{agg_capture}}.}
 
-\item{...}{passed on to the underlying \code{\link[ragg]{agg_capture}} device.}
+\item{...}{passed on to the underlying \code{\link[ragg]{agg_capture}}
+device.}
 
 \item{term_col}{Logical value indicating that the foreground and background
 colors used in the plot should be set to that of the terminal.}
@@ -49,7 +50,7 @@ changed since the last plot.
 \code{\link{term_replot}} will redraw the content of the device in the
 terminal. In principle \code{\link{term_replot}} is called automatically
 when the contents of the device changed. This function can be used to force
-plotting. 
+plotting.
 
 When \code{term_bg = TRUE} the background color of the graphics device
 ('\code{bg}') will be set using \code{\link[graphics]{par}}. When

@@ -3,16 +3,17 @@
 #' @param width The width of the image. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
-#' @param height The height of the image. Passed on to 
+#' @param height The height of the image. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
 #' @param units The units in which 'height' and 'width' are given. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
-#' @param res The resolution of the image. Passed on to 
+#' @param res The resolution of the image. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
-#' @param ... passed on to the underlying \code{\link[ragg]{agg_capture}} device. 
+#' @param ... passed on to the underlying \code{\link[ragg]{agg_capture}}
+#' device.
 #'
 #' @param term_col Logical value indicating that the foreground and background
 #' colors used in the plot should be set to that of the terminal.
@@ -43,7 +44,7 @@
 #' \code{\link{term_replot}} will redraw the content of the device in the
 #' terminal. In principle \code{\link{term_replot}} is called automatically
 #' when the contents of the device changed. This function can be used to force
-#' plotting. 
+#' plotting.
 #'
 #' When \code{term_bg = TRUE} the background color of the graphics device
 #' ('\code{bg}') will be set using \code{\link[graphics]{par}}. When
@@ -70,9 +71,9 @@ tgp <- function(
   if (is.na(res)) {
     dim <- term_dim()
     # number of pixels per row/line = font height
-    r <- dim["y_pixels"]/dim["columns"]
+    r <- dim["y_pixels"] / dim["rows"]
     # Default font is 12 points = 12/72 inch so to get the right font size:
-    res <- 0.8*r*72/12
+    res <- if (is.nan(r) || r == 0) 100 else 0.8 * r * 72 / 12
   }
   ragg_dev <- ragg::agg_capture(width = width, height = height, 
     units = units, res = res, ...)
@@ -80,7 +81,7 @@ tgp <- function(
   man <- device_manager(ragg_dev, raster2tgp)
   cur <- grDevices::dev.cur() |> names()
   if (cur == "null device") stop("Failed to open device")
-  if (!exists("devices", devices)) devices$devices = list()
+  if (!exists("devices", devices)) devices$devices <- list()
   devices$devices[[cur]] <- man
   # Set colours
   if (term_bg) { 
@@ -99,4 +100,22 @@ tgp <- function(
   invisible(man)
 }
 
-
+# nolint start: line_length_linter.
+#' Unicode values used by the Terminal Graphics Protocol
+#'
+#' This set of combining characters ("diacritics", which are things like
+#' accent characters and other character modifiers) to encode information for
+#' the terminal in a way that does not render to the screen. The characters
+#' used are very specific and are defined by the terminal graphics protocol
+#' itself.
+#'
+#' @format A `character` vector, where each entry is a single unicode character.
+#'   with `names()` set to the 4-digit unicode identifier.
+#'
+#' @source [the terminal graphics protocol specification](https://sw.kovidgoyal.net/kitty/graphics-protocol/)
+#'   and linked
+#'   [diacritics file](https://sw.kovidgoyal.net/kitty/_downloads/f0a0de9ec8d9ff4456206db8e0814937/rowcolumn-diacritics.txt).
+#'
+#' @name tgp_diacritics
+# nolint end
+NULL

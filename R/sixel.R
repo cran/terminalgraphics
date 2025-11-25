@@ -3,16 +3,17 @@
 #' @param width The width of the image. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
-#' @param height The height of the image. Passed on to 
+#' @param height The height of the image. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
 #' @param units The units in which 'height' and 'width' are given. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
-#' @param res The resulution of the image. Passed on to 
+#' @param res The resolution of the image. Passed on to
 #' \code{\link[ragg]{agg_capture}}.
 #'
-#' @param ... passed on to the underlying \code{\link[ragg]{agg_capture}} device. 
+#' @param ... passed on to the underlying \code{\link[ragg]{agg_capture}}
+#' device.
 #'
 #' @param term_col Logical value indicating that the foreground and background
 #' colors used in the plot should be set to that of the terminal.
@@ -51,8 +52,8 @@
 #' will be set using \code{\link[graphics]{par}}.
 #'
 #' @examples
-#'
 #' if (has_sixel_support()) {
+#'   # Open device
 #'   sixel()
 #'   plot(rnorm(100))
 #'   abline(h = 0, lwd = 2, col = term_palette()[1])
@@ -69,17 +70,17 @@ sixel <- function(
   if (is.na(res)) {
     dim <- term_dim()
     # number of pixels per row/line = font height
-    r <- dim["y_pixels"]/dim["columns"]
+    r <- dim["y_pixels"] / dim["rows"]
     # Default font is 12 points = 12/72 inch so to get the right font size:
-    res <- if (is.nan(r) || r == 0) res = 100 else 0.8*r*72/12
+    res <- if (is.nan(r) || r == 0) 100 else 0.8 * r * 72 / 12
   }
   ragg_dev <- ragg::agg_capture(width = width, height = height, 
     units = units, res = res, ...)
   # Create closure that will handle redrawing
-  man <- device_manager(ragg_dev, display_fun = raster2sixel)
+  man <- device_manager(ragg_dev, raster2sixel)
   cur <- grDevices::dev.cur() |> names()
   if (cur == "null device") stop("Failed to open device")
-  if (!exists("devices", devices)) devices$devices = list()
+  if (!exists("devices", devices)) devices$devices <- list()
   devices$devices[[cur]] <- man
   # Set colours
   if (term_bg) { 
