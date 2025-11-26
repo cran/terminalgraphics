@@ -15,8 +15,8 @@ device_manager <- function(ragg_dev, display_fun) {
     # ragg > 1.5 can tagg the raster if plot commands have happened
     # this is much faster than comparing the rasters and als much
     # reliable
-    if (utils::packageVersion("raster") > "1.5.0") {
-      if (attr(raster_new, "changed")) {
+    if (utils::packageVersion("ragg") > "1.5.0") {
+      if (isTRUE(attr(raster_new, "changed"))) {
         plot(raster_new)
       }
     } else {
@@ -55,3 +55,4 @@ term_replot <- function() {
     man$plot()
   }
 }
+

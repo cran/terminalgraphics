@@ -1,4 +1,12 @@
-# terminalgraphics 0.1.2
+# terminalgraphics 0.2.1
+
+## Bug fixes
+
+* Opening a `sixel` or `tgp` device generated an error when either `raster` or
+  `ragg` (version <= 1.5.0) is installed.
+
+
+# terminalgraphics 0.2.0
 
 ## New features
 

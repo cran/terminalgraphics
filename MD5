@@ -1,8 +1,8 @@
-d62048d1e64960a2714d89e0c1d45afb *DESCRIPTION
+8f5ce11cd9c5b1e619e7ef72794c9aec *DESCRIPTION
 a3ce0c6883d3b178aba525fcc0adf378 *NAMESPACE
-175ed6161af65d6ba1d374fb971509ec *NEWS.md
+133d3b61b25f49b46dd20fea54a8d3c1 *NEWS.md
 93c03858213ee79a3be0e07c81502a56 *R/RcppExports.R
-b5d40cb6b7b19320414155e206714375 *R/device_manager.R
+3cfb42e918be8a90e16cd283af0a22c8 *R/device_manager.R
 0bfb721c7b485ce780d19dda06e7707b *R/has_sixel_support.R
 a72e6a8140ec4705d4e3d1a59893585e *R/has_tgp_support.R
 0df1c67e46ef8b06c3d70246b335d415 *R/is_terminal.R
