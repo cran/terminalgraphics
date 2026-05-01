@@ -22,12 +22,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // query_sixel_support_rcpp
-Rcpp::LogicalVector query_sixel_support_rcpp();
-RcppExport SEXP _terminalgraphics_query_sixel_support_rcpp() {
+Rcpp::LogicalVector query_sixel_support_rcpp(bool tmux);
+RcppExport SEXP _terminalgraphics_query_sixel_support_rcpp(SEXP tmuxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(query_sixel_support_rcpp());
+    Rcpp::traits::input_parameter< bool >::type tmux(tmuxSEXP);
+    rcpp_result_gen = Rcpp::wrap(query_sixel_support_rcpp(tmux));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -54,7 +55,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_terminalgraphics_term_color_mode_rcpp", (DL_FUNC) &_terminalgraphics_term_color_mode_rcpp, 1},
-    {"_terminalgraphics_query_sixel_support_rcpp", (DL_FUNC) &_terminalgraphics_query_sixel_support_rcpp, 0},
+    {"_terminalgraphics_query_sixel_support_rcpp", (DL_FUNC) &_terminalgraphics_query_sixel_support_rcpp, 1},
     {"_terminalgraphics_query_tgp_support_rcpp", (DL_FUNC) &_terminalgraphics_query_tgp_support_rcpp, 0},
     {"_terminalgraphics_screen_dim_cpp", (DL_FUNC) &_terminalgraphics_screen_dim_cpp, 0},
     {NULL, NULL, 0}

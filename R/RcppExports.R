@@ -5,8 +5,8 @@ term_color_mode_rcpp <- function(dsr = TRUE) {
     .Call(`_terminalgraphics_term_color_mode_rcpp`, dsr)
 }
 
-query_sixel_support_rcpp <- function() {
-    .Call(`_terminalgraphics_query_sixel_support_rcpp`)
+query_sixel_support_rcpp <- function(tmux) {
+    .Call(`_terminalgraphics_query_sixel_support_rcpp`, tmux)
 }
 
 query_tgp_support_rcpp <- function() {

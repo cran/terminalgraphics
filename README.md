@@ -147,6 +147,12 @@ options(
 )
 ```
 
+Note that in order to be able to determine all colours in Kitty, the option
+```
+allow_remote_control yes
+```
+needs to be set in `~/.config/kitty/kitty.conf`.
+
 ### False warnings 
 
 The package tries to determine if a terminal supports Sixel or Terminal Graphics
@@ -155,4 +161,14 @@ warnings when opening a device. These are only issues once and the device will
 work. The warnings can be disabled by the options `warned_sixel_support` and
 `warned_tgp_support` to `TRUE`. 
 
+### Tmux
+
+Terminal Graphics Protocol and Sixel are also supported from tmux as long as the
+terminal support it. For Terminal Graphics Protocol the `allow-passthrough`
+option needs to be set to `on`, which it usually is not by default. This can be
+enabled by the following line in `~/.tmux.conf`.
+
+```
+set-option -g allow-passthrough on
+```
 

@@ -38,12 +38,19 @@ has_tgp_support <- function(warn = FALSE, throw = FALSE) {
 }
 
 query_tgp_support <- local({
+  # support == NA   no support
+  # support == "tmix"   support, but should be escaped
+  # support == ""   support
   support <- NULL
   function() {
     if (is.null(support)) {
-      if (tmux() && !tmux_passthrough()) {
-        #warning("Passthrough is not enabled in tmux;", 
-          #" terminal graphics protocol is not supported.")
+      if (is_nvim() || is_vim()) {
+        # the vim and nvim terminals dont supprt tgp; nvim even
+        # hangs
+        support <<- NA
+      } else if (tmux() && !tmux_passthrough()) {
+         # Passthrough is not enabled in tmux
+         # terminal graphics protocol is not supported
         support <<- NA
       } else {
         support <<- query_tgp_support_rcpp()

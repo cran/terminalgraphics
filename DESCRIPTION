@@ -1,7 +1,7 @@
 Package: terminalgraphics
 Type: Package
 Title: Graphical Output in Terminals
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: 
     c(
       person(
@@ -31,17 +31,17 @@ Imports: Rcpp, utils, methods, graphics, grDevices, ragg, base64enc
 Suggests: magick
 LinkingTo: Rcpp
 License: GPL-3
-SystemRequirements: A terminal emulator supporting the Terminal
+SystemRequirements: C++20, A terminal emulator supporting the Terminal
         Graphics Protocol
         (<https://sw.kovidgoyal.net/kitty/graphics-protocol/>) or
         Sixel.
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 NeedsCompilation: yes
-Packaged: 2025-11-25 15:25:26 UTC; eoos
+Packaged: 2026-05-01 13:53:39 UTC; eoos
 Author: Jan van der Laan [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-0693-1514>),
   Doug Kelkhoff [ctb] (ORCID: <https://orcid.org/0009-0003-7845-4061>)
 Maintainer: Jan van der Laan <r@eoos.dds.nl>
 Repository: CRAN
-Date/Publication: 2025-11-26 08:20:02 UTC
+Date/Publication: 2026-05-01 14:10:02 UTC

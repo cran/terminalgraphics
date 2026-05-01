@@ -5,10 +5,10 @@
 \title{Terminal Graphics Protocol Device}
 \usage{
 sixel(
-  width = getOption("term_width", max(480, min(1200, term_width(), term_height()/0.8))),
-  height = getOption("term_height", 0.8 * width),
+  width = term_default_width(),
+  height = term_default_height(width),
   units = "px",
-  res = getOption("term_res", NA),
+  res = term_default_res(),
   ...,
   term_col = getOption("term_col", FALSE),
   term_bg = term_col,

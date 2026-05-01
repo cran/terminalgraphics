@@ -4,7 +4,7 @@
 #' To get the background and foreground colors, \code{kitten query-terminal} is
 #' called. To get all colors and the palette \code{kitty @get-colors} is called
 #' using \code{\link{system}}. However, for the last to work
-#' \code{allow_remote_control} needs to be set to \code{true} in the config
+#' \code{allow_remote_control} needs to be set to \code{yes} in the config
 #' file for kitty.
 #'
 #' @return
@@ -33,7 +33,11 @@ kitty_colors <- function() {
     if (!is_kitty()) {
       stop("Your terminal does not seem to be 'kitty'.")
     }
-    colors <- system("kitty @get-colors", intern = TRUE)
+    colors <- system("kitty @get-colors", intern = TRUE, 
+      ignore.stderr = TRUE)
+    status <- attr(colors, "status")
+    if (!is.null(status) && status != 0) 
+      stop(attr(colors, "errmsg"))
     colors <- utils::read.table(
       textConnection(colors),
       comment = "",

@@ -62,22 +62,14 @@
 #' @rdname sixel
 #' @export
 sixel <- function(
-    width = getOption("term_width", max(480, min(1200, term_width(), term_height()/0.8))),
-    height = getOption("term_height", 0.8*width), 
-    units = "px", res = getOption("term_res", NA), ..., 
+    width = term_default_width(), height = term_default_height(width), 
+    units = "px", res = term_default_res(), ..., 
     term_col = getOption("term_col", FALSE), term_bg = term_col, term_fg = term_col) {
   warn_sixel_support()
-  if (is.na(res)) {
-    dim <- term_dim()
-    # number of pixels per row/line = font height
-    r <- dim["y_pixels"] / dim["rows"]
-    # Default font is 12 points = 12/72 inch so to get the right font size:
-    res <- if (is.nan(r) || r == 0) 100 else 0.8 * r * 72 / 12
-  }
-  ragg_dev <- ragg::agg_capture(width = width, height = height, 
-    units = units, res = res, ...)
+  options <- list(width = width, height = height, units = units, res = res,
+    width_set = !missing(width), height_set = !missing(height))
   # Create closure that will handle redrawing
-  man <- device_manager(ragg_dev, raster2sixel)
+  man <- device_manager(raster2sixel, options, ...)
   cur <- grDevices::dev.cur() |> names()
   if (cur == "null device") stop("Failed to open device")
   if (!exists("devices", devices)) devices$devices <- list()
@@ -96,6 +88,7 @@ sixel <- function(
   # Add callback handler; this will check after each command if the plot device
   # has changed; and if so, will redraw the plot in the terminal.
   addTaskCallback(term_update, name = "gp")
+  setHook("before.plot.new", term_reopen)
   invisible(man)
 }
 

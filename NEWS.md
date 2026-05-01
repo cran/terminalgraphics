@@ -1,3 +1,27 @@
+# terminalgraphics 0.3.0
+
+## New Features
+
+* When the size of the terminal changes new plots (e.g. when calling implicitly
+  or explicitly `new.plot`) will rescale to follow the size of the new terminal.
+  This happens only when the width and height of the plot were *not* explicitly
+  set.  Note that after resizing the terminal updates to a new plot will not
+  resize the plot. 
+
+## Bug fixes
+
+* Support for Terminal Graphics Protocol and Sixel was not properly detected
+  in Vim and NVim terminals. In NVim this even caused the terminal to hang. Code
+  now checks if it is running in such a terminal. Graphics output is not
+  supported in these terminals, but at least now this is detected properly.
+
+* Sixel support is now detected when running in tmux for terminals that support
+  sixel.
+
+* `term_palette()` no longer gives an error and returns the default palette,
+  when run in kitty with remote control disabled.
+
+
 # terminalgraphics 0.2.1
 
 ## Bug fixes

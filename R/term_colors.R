@@ -65,15 +65,20 @@ term_foreground <- function() {
 #' @export
 term_palette <- function() {
   palette <- getOption("term_palette")
+  if (is.null(palette) && is_kitty()) {
+    try({ 
+      palette <- kitty_palette() 
+      options(term_palette = palette)
+    }, silent = TRUE)
+  }
+  # fallback
   if (is.null(palette)) {
-    palette <- if (is_kitty()) {
-      kitty_palette()
-    } else if (isTRUE(all.equal(term_color_mode(), "dark"))) {
-      grDevices::hcl.colors("Dark2", n = 9)
+    if (isTRUE(all.equal(term_color_mode(), "dark"))) {
+      palette <- grDevices::hcl.colors("Dark2", n = 9)
     } else {
-      grDevices::hcl.colors("Dark2", n = 9)
+      palette <- grDevices::hcl.colors("Dark2", n = 9)
     }
-    options(palette = term_palette)
+    options(term_palette = palette)
   }
   palette
 }

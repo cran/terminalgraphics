@@ -16,7 +16,12 @@
 #'
 #' @export
 term_dim <- function() {
-  dim <- screen_dim_cpp()
+  dim <- if (is_nvim()) {
+    # nvim crashed when trying to query dimensions
+    dim <- c(NA_integer_, NA_integer_, NA_integer_, NA_integer_)
+  } else {
+    screen_dim_cpp()
+  }
   names(dim) <- c("x_pixels", "y_pixels", "rows", "columns")
   dim
 }

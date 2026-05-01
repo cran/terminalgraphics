@@ -63,22 +63,14 @@
 #' @rdname tgp
 #' @export
 tgp <- function(
-    width = getOption("term_width", max(480, min(1200, term_width(), term_height()/0.8))),
-    height = getOption("term_height", 0.8*width), 
-    units = "px", res = getOption("term_res", NA), ..., 
+    width = term_default_width(), height = term_default_height(width), 
+    units = "px", res = term_default_res(), ...,
     term_col = getOption("term_col", FALSE), term_bg = term_col, term_fg = term_col) {
   warn_tgp_support()
-  if (is.na(res)) {
-    dim <- term_dim()
-    # number of pixels per row/line = font height
-    r <- dim["y_pixels"] / dim["rows"]
-    # Default font is 12 points = 12/72 inch so to get the right font size:
-    res <- if (is.nan(r) || r == 0) 100 else 0.8 * r * 72 / 12
-  }
-  ragg_dev <- ragg::agg_capture(width = width, height = height, 
-    units = units, res = res, ...)
+  options <- list(width = width, height = height, units = units, res = res,
+    width_set = !missing(width), height_set = !missing(height))
   # Create closure that will handle redrawing
-  man <- device_manager(ragg_dev, raster2tgp)
+  man <- device_manager(raster2tgp, options, ...)
   cur <- grDevices::dev.cur() |> names()
   if (cur == "null device") stop("Failed to open device")
   if (!exists("devices", devices)) devices$devices <- list()
@@ -97,25 +89,28 @@ tgp <- function(
   # Add callback handler; this will check after each command if the plot device
   # has changed; and if so, will redraw the plot in the terminal.
   addTaskCallback(term_update, name = "gp")
+  setHook("before.plot.new", term_reopen)
   invisible(man)
 }
 
-# nolint start: line_length_linter.
-#' Unicode values used by the Terminal Graphics Protocol
-#'
-#' This set of combining characters ("diacritics", which are things like
-#' accent characters and other character modifiers) to encode information for
-#' the terminal in a way that does not render to the screen. The characters
-#' used are very specific and are defined by the terminal graphics protocol
-#' itself.
-#'
-#' @format A `character` vector, where each entry is a single unicode character.
-#'   with `names()` set to the 4-digit unicode identifier.
-#'
-#' @source [the terminal graphics protocol specification](https://sw.kovidgoyal.net/kitty/graphics-protocol/)
-#'   and linked
-#'   [diacritics file](https://sw.kovidgoyal.net/kitty/_downloads/f0a0de9ec8d9ff4456206db8e0814937/rowcolumn-diacritics.txt).
-#'
-#' @name tgp_diacritics
-# nolint end
-NULL
+
+term_default_width <- function() {
+  getOption("term_width", max(480, min(1200, term_width(), term_height()/0.8)))
+}
+
+term_default_height <- function(width) {
+  getOption("term_height", 0.8*width)
+}
+
+term_default_res <- function() {
+  res <- getOption("term_res", NA)
+  if (is.na(res)) {
+    dim <- term_dim()
+    # number of pixels per row/line = font height
+    r <- dim["y_pixels"] / dim["rows"]
+    # Default font is 12 points = 12/72 inch so to get the right font size:
+    res <- if (is.nan(r) || r == 0) 100 else 0.8 * r * 72 / 12
+  }
+  res
+}
+

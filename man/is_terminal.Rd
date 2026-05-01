@@ -3,11 +3,20 @@
 \name{is_kitty}
 \alias{is_kitty}
 \alias{is_ghostty}
+\alias{is_nvim}
+\alias{is_vim}
+\alias{is_tmux}
 \title{Determine the type of terminal}
 \usage{
 is_kitty()
 
 is_ghostty()
+
+is_nvim()
+
+is_vim()
+
+is_tmux()
 }
 \value{
 Returns \code{TRUE} if R is running in a given terminal

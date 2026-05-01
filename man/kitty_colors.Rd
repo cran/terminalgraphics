@@ -29,7 +29,7 @@ Get the colors used in the kitty terminal
 To get the background and foreground colors, \code{kitten query-terminal} is
 called. To get all colors and the palette \code{kitty @get-colors} is called
 using \code{\link{system}}. However, for the last to work
-\code{allow_remote_control} needs to be set to \code{true} in the config
+\code{allow_remote_control} needs to be set to \code{yes} in the config
 file for kitty.
 }
 \examples{

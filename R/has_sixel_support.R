@@ -17,8 +17,13 @@
 #'
 #' @export
 has_sixel_support <- function(warn = FALSE, throw = FALSE) {
+  if (is_vim() || is_nvim() || is_kitty()) {
+    if (warn) 
+      warning("Terminal does support sixel")
+    return(FALSE)
+  }
   # Send query for support
-  sup <- query_sixel_support_rcpp()
+  sup <- query_sixel_support_rcpp(is_tmux())
   if (is.na(sup) || !sup) {
     if (warn) 
       warning("Terminal does not report supporting sixel")

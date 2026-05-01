@@ -1,5 +1,6 @@
 #include <Rcpp.h>
 #include <optional>
+#include "utils.h"
 
 #if defined (__unix__) || defined (__APPLE__) 
 
@@ -8,33 +9,7 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 
-inline char getch() {
-  char buf = 0;
-  struct termios old = {0};
-  if (tcgetattr(0, &old) < 0)
-    perror("tcsetattr()");
-  old.c_lflag &= ~ICANON;
-  old.c_lflag &= ~ECHO;
-  old.c_cc[VMIN] = 1;
-  old.c_cc[VTIME] = 0;
-  if (tcsetattr(0, TCSANOW, &old) < 0)
-    perror("tcsetattr ICANON");
-  if (read(0, &buf, 1) < 0)
-    perror ("read()");
-  old.c_lflag |= ICANON;
-  old.c_lflag |= ECHO;
-  if (tcsetattr(0, TCSADRAIN, &old) < 0)
-    perror ("tcsetattr ~ICANON");
-  return (buf);
-}
-
-
-std::optional<bool> query_sixel_support() {
-  // If we are not connected to a terminal return false immediately
-  if (!isatty(0)) return false;
-  // Query support
-  Rcpp::Rcout << "\033[0c";
-  Rcpp::Rcout.flush();
+bool device_ansi_ansi_response_sixel() {
   // We expect something like \033[?1;2;3c
   // If one of the number is 6, the terminal supports sixel
   bool support = false;
@@ -63,9 +38,27 @@ std::optional<bool> query_sixel_support() {
   return support;
 }
 
+std::optional<bool> query_sixel_support(bool tmux) {
+  // If we are not connected to a terminal return false immediately
+  if (!isatty(0)) return false;
+  // Query support
+  const std::string query = "\033[0c";
+  if (!tmux) {
+    Rcpp::Rcout << query.c_str();
+    Rcpp::Rcout.flush();
+    if (device_ansi_ansi_response_sixel()) return true;
+  } else {
+    // Query support with tmux passthough
+    Rcpp::Rcout << tgp_passthrough("tmux", query).c_str();
+    Rcpp::Rcout.flush();
+    if (device_ansi_ansi_response_sixel()) return true;
+  }
+  return false;
+}
+
 #else
 
-std::optional<bool> query_sixel_support() {
+std::optional<bool> query_sixel_support(bool tmux) {
   return {};
 }
 
@@ -73,8 +66,8 @@ std::optional<bool> query_sixel_support() {
 
 
 // [[Rcpp::export]]
-Rcpp::LogicalVector query_sixel_support_rcpp() {
-  const auto res = query_sixel_support();
+Rcpp::LogicalVector query_sixel_support_rcpp(bool tmux) {
+  const auto res = query_sixel_support(tmux);
   if (res.has_value()) {
     return res.value();
   } else {
